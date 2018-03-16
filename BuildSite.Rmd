@@ -179,6 +179,7 @@ RSA ...
 #for (rsa in rsadata){
 recnos=which(!repealed)
 hasnosource=which(nosource)
+recno=3556
 #for (rsa in (rsadata[!repealed,])){
 for( recno in recnos) {
   rsa=rsadata[recno,]
@@ -222,9 +223,12 @@ for( recno in recnos) {
         isLaw=str_locate(tt,LawPattern)
         isLaw=na.omit(isLaw)
         pl=isLaw
-      } else pl=isPL
-
-      isPl=(length(isPL)>0 && isPL[1]==1) 
+      }
+      if(length(isPL)>0){
+        pl=isPL
+        isLaw=F
+      }
+      isPL=(length(isPL)>0 && isPL[1]==1) 
       isLaw=(length(isLaw)>0 && isLaw[1]==1)
       ###      if(dim(pl)[1]>1)pl=pl[1,]
       #      print(recno)
@@ -241,10 +245,12 @@ for( recno in recnos) {
       }
       if (isPL | isLaw){
         write(file=fn,nilnk(tt,plt), append=T)
-#        write(file=paste0(law.wikidir,plt,".md"),nilnk(rsa$sectiontitle,rsa$mdlink))
+        #        write(file=paste0(law.wikidir,plt,".md"),nilnk(rsa$sectiontitle,rsa$mdlink))
         write(file=paste0(law.wikidir,"laws.md"),nilnk(rsa$sectiontitle,rsa$mdlink))
+      } else {
+        write(file=fn,tt,append = T)
       }      
-    } else write(file=fn,tt,append = T)
+    } 
     write("  ",file=fn,append=T)
   }
 }
