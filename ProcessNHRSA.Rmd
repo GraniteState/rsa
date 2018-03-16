@@ -71,8 +71,6 @@ sectiontitle
 codesec
 sourcenote
 ```{r set-literals}
-bodytags=c("h1","h2","h3","b","codesect","sourcenote")
-bodytags7=c("h1","h2","h2","h3","b","codesect","sourcenote")
 dftags=c("title","chapter","sectionnum","sectiontitle","codesec","sourcenote")
 dftags7=c("title","chapter","subchapter","sectionnum","sectiontitle","codesec","sourcenote")
 dftags8=c("title","chapter","sectionnum","enactnote","repealnotes","sectiontitle","codesec","sourcenote")
@@ -80,8 +78,6 @@ dftags9=c("title","chapter","subchapter","sectionnum","enactlnote","repealnotes"
 dftagsr=c("","title","","chapter","","codesec","sourcenote")
 
 
-htags=c("","title","","chapter","","sectionnum","","sectiontitle","","codesec","","sourcenote")
-htags13=c("","title","","chapter","","subchapter","","sectionnum","","sectiontitle","","codesec","","sourcenote")
 ```
 
 
@@ -105,73 +101,61 @@ raw.rsa=data.frame(rsaxml=character(),
 for (rsarec in 1:length(rsahtml)){
   rsaxml<-xml2::as_list(xml2::read_html(rsahtml[rsarec]))
   rsameta<-unlist(rsaxml$html$body)
-##  metalist<-which((names(rsameta)=="meta"))
+  ##  metalist<-which((names(rsameta)=="meta"))
   metanames=names(rsameta)
   metalist<-which(metanames!="")
   rsameta=rsameta[metalist]
   rsameta=rsameta[rsameta!="\r\n"]
   lmeta=length(rsameta)
-
-  if (lmeta==5555){
-    for (item in metalist){
-      element=rsameta[item]
-      ename=attr(element[[1]],"name")
-      #    print(paste(rsahtml[rsarec],ename))
-      
-      assign(ename,attr(element[[1]],"content") )
+  
+#  validmeta=c(7,6,3,8,9)
+  #  if (!(lmeta %in% validmeta)){
+  #    print(lmeta)
+  #    print(rsarec)
+  #  } else {
+  subchapter=""
+  sectionnum=""
+  sectiontitle=""
+  repealed=FALSE
+  if (lmeta %in% c(8,9)){
+    if (lmeta==8) { names(rsameta)=dftags8
     }
-    
-    df=data.frame(rsaxml=rsahtml[rsarec],titletitle=titletitle,sectiontitle=sectiontitle,chapter=chapter,text=codesect,sourcenote=sourcenote)
-    raw.rsa=rbind(raw.rsa,df)
+    else {
+      names(rsameta)=dftags9
+    }
+    try((sectionnum=rsameta$sectionnum.h31),silent=T)
+    try((sectiontitle=rsameta$sectiontitle),silent=T)
+    repealed=TRUE
+  } 
+  if (lmeta==7){
+    names(rsameta)=dftags7
+    try((subchapter=rsameta$subchapter.h21),silent=T)
+    try((sectionnum=rsameta$sectionnum.h31),silent=T)
+    try((sectiontitle=rsameta$sectiontitle),silent=T)
+  } 
+  if (lmeta==6){
+    names(rsameta)=dftags
+    try((sectionnum=rsameta$sectionnum.h31),silent=T)
+    try((sectiontitle=rsameta$sectiontitle),silent=T)
+  } 
+  #repealed
+  if (lmeta==3){
+    names(rsameta)=dftagsr
+    repealed=TRUE
+  } 
+  sourcenote=""
+  if (length(rsameta$sourcenote)>1){
+    sourcenote=rsameta$sourcenote.p2
   }
-  validmeta=c(7,6,3,8,9)
-  if (!(lmeta %in% validmeta)){
-    print(lmeta)
-    print(rsarec)
-  } else {
-    subchapter=""
-    sectionnum=""
-    sectiontitle=""
-    repealed=FALSE
-    if (lmeta %in% c(8,9)){
-      if (lmeta==8) { names(rsameta)[metalist]=dftags8
-      }
-      else {
-        names(rsameta)[metalist]=dftags9
-      }
-      try((sectionnum=rsameta$sectionnum.h31),silent=T)
-      try((sectiontitle=rsameta$sectiontitle),silent=T)
-      repealed=TRUE
-    } 
-    if (lmeta==7){
-      names(rsameta)[metalist]=dftags7
-      try((subchapter=rsameta$subchapter.h21),silent=T)
-      try((sectionnum=rsameta$sectionnum.h31),silent=T)
-      try((sectiontitle=rsameta$sectiontitle),silent=T)
-    } 
-    if (lmeta==6){
-      names(rsameta)[metalist]=dftags
-      try((sectionnum=rsameta$sectionnum.h31),silent=T)
-      try((sectiontitle=rsameta$sectiontitle),silent=T)
-    } 
-    #repealed
-    if (lmeta==3){
-      names(rsameta)=dftagsr
-      repealed=TRUE
-    } 
-    sourcenote=""
-    if (length(rsameta$sourcenote)>1){
-      sourcenote=rsameta$sourcenote.p2
-    }
-    if (length(rsameta$sourcenote)==1){
-      sourcenote=rsameta$sourcenote
-    }
-    if (sum(rsameta %like% "repealed")==0){
+  if (length(rsameta$sourcenote)==1){
+    sourcenote=rsameta$sourcenote
+  }
+  if (sum(rsameta %like% "repealed")==0){
     df=data.frame(rsaxml=as.character(rsahtml[rsarec]),
-                  titlenum=rsameta$title.h1`,
-                  titlename=rsameta$title.h1[[3]],
-                  chapternum=rsameta$chapter.h2`,
-                  chaptertitle=rsameta$chapter.h2[[3]],
+                  titlenum=rsameta$title.h11,
+                  titlename=rsameta$title.h13,
+                  chapternum=rsameta$chapter.h21,
+                  chaptertitle=rsameta$chapter.h23,
                   subchapter=subchapter,
                   sectionnum=sectionnum,
                   sectiontitle=sectiontitle,
@@ -179,9 +163,9 @@ for (rsarec in 1:length(rsahtml)){
                   sourcenote=sourcenote
     )
     raw.rsa=rbind(raw.rsa,df)
-}    
+  }    
     
-  }  
+#}  
   #else {
   #  print(rsarec)
   #  print(metalist)
