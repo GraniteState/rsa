@@ -1,0 +1,54 @@
+---
+title: "Process NHRSA Html To Linked"
+author: "K Belisle"
+date: "March 4, 2018"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(stringsAsFactors = F)
+
+```
+
+```{r read-html-files}
+rsahtml<-list.files(path="../html/",pattern="*.htm",recursive = T,full.names = T)
+head(rsahtml)
+```
+rsaxml
+chapter
+titlename
+sectiontitle
+codesec
+sourcenote
+
+
+```{r read-xml-matter}
+require(xml2)
+raw.rsa=data.frame(rsaxml=character(),titlename=character(),chapter=character(),sectiontitle=character(),text=character(),sourcenote=character())
+for (rsarec in 1:length(rsahtml)){
+  rsaxml<-xml2::as_list(xml2::read_html(rsahtml[rsarec]))
+  rsameta<-(rsaxml$html$head)
+  metalist<-which((names(rsameta)=="meta"))
+  if (length(metalist)==5){
+    for (item in metalist){
+      element=rsameta[item]
+      ename=attr(element[[1]],"name")
+    #    print(paste(rsahtml[rsarec],ename))
+      
+      assign(ename,attr(element[[1]],"content") )
+    }
+    df=data.frame(rsaxml=rsahtml[rsarec],titlename=titlename,sectiontitle=sectiontitle,chapter=chapter,text=codesect,sourcenote=sourcenote)
+    raw.rsa=rbind(raw.rsa,df)
+  }
+}
+saveRDS(raw.rsa,file="nhrsa.rds",compress = F)
+#
+
+#require(stringr)
+#raw.rsa$index=1
+#rsadata<-reshape2::dcast(raw.rsa,rsaxml~name+text,value.var="index")
+```
+

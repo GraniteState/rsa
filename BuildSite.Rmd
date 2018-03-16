@@ -1,0 +1,254 @@
+---
+title: "Build Site"
+author: "K Belisle"
+date: "March 4, 2018"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(stringsAsFactors = F)
+require(data.table)
+require(stringr)
+require(tidyr)
+require(gtools)
+#require(stringi)
+
+```
+
+```{r markdown-functions}
+h1<-function(str){
+  paste0("#",str,"  ")
+}
+h2<-function(str){
+  paste0("##",str,"  ")
+}
+h3<-function(str){
+  paste0("###",str,"  ")
+}
+h4<-function(str){
+  paste0("####",str,"  ")
+}
+em<-function(str){
+  paste0("*",str,"*")
+}
+st<-function(str){
+  paste0("**",str,"**")
+}
+ilnk<-function(str){
+  paste0("[",str,"]")
+}
+nilnk<-function(show,lnk){
+  ilnk(ilnk(paste(show,lnk,sep="|")))
+}
+
+
+```
+
+
+```{r read-data-files}
+rsadata=readRDS("nhrsa.rds")
+#tkey=mixedorder(rsadata$titlename,numeric.type = "roman")
+#ckey=mixedorder(rsadata$chapter)
+skey=mixedorder(rsadata$sectiontitle)
+#keys=data.frame(c(tkey,ckey,skey))
+rsadata$key=skey
+rsadata=rsadata[order(rsadata$key),]
+repealed=(rsadata$text %like% "\\[Repealed [0-9]{4}")
+nosource=!(nchar(rsadata$text)>1)
+```
+
+```{r standardize-source-notes}
+replist=c("eff","p","a","m","Sept")
+print(replist)
+#paste0(replist,".")
+for (frag in replist){ rsadata$sourcenote=str_replace_all(rsadata$sourcenote,paste0(frag,"\\."),frag)
+}#  t=str_replace(sourcenote,"Jan\\.","Jan")
+for (monno in 1:12){
+  frag=paste0(substr(month.abb,1,2)[monno],"\\.")
+  fragr=month.name[monno]
+  rsadata$sourcenote=str_replace_all(rsadata$sourcenote,frag,fragr)
+  frag=paste0(month.abb[monno],"\\.")
+  fragr=month.name[monno]
+  rsadata$sourcenote=str_replace_all(rsadata$sourcenote,frag,fragr)
+}  
+
+```
+
+
+```{r parse-title}
+titles=unique(rsadata$titlename)
+titledata=as.data.frame(str_split_fixed(titles," ",n=3))
+titledata$V1<-NULL
+names(titledata)=c("roman","title")
+titledata$titleno=roman2int(titledata$roman)
+titledata$titlename=titles
+rm(titles)
+rsadata=merge(rsadata,titledata)
+rsadata=rsadata[order(rsadata$key),]
+rm(titledata)
+```
+
+```{r parse-section}
+titles=unique(rsadata$sectiontitle)
+titledata=as.data.frame(str_split_fixed(titles," ",n=3))
+titledata$V1<-NULL
+names(titledata)=c("sectioncode","section")
+sectiondata=as.data.frame(str_split_fixed(titledata$sectioncode,n=2,":"))
+names(sectiondata)=c("sectionnumber","subpart")
+sectiondata=cbind(sectiondata,titledata)
+#sectiondata$sectionorder=mixedsort(sectiondata$sectionnumber)
+#sectondata=sectiondata[order(sectiondata$sectionorder),]
+rm(titledata)
+sectiondata$sectiontitle=titles
+rm(titles)
+rsadata=merge(rsadata,sectiondata)
+rsadata=rsadata[order(rsadata$key),]
+rm(sectiondata)
+```
+
+### This is just for research
+
+```{r process-source-notes}
+sourcetext=rsadata$sourcenote[!repealed & !nosource]
+#sourcetext=sourcetext[nchar(sourcetext)>1]
+### moved sourcetext=str_replace(sourcetext,"eff\\.","eff")
+t=str_split(sourcetext,"\\.",simplify=T)
+dt=as.data.frame(t)
+dt$V1<-NULL
+dt$rsaxml=rsadata$rsaxml[!repealed & !nosource]
+srcnotes<-gather(dt, vv, sourcenote, 1:(ncol(dt)-1), factor_key=FALSE)
+srcnotes$vv<-NULL
+srcnotes=srcnotes[!is.na(srcnotes$sourcenote),]
+srcnotes=srcnotes[!(srcnotes$sourcenote==""),]
+srcnotes=srcnotes[!(srcnotes$sourcenote==" "),]
+srcnotes=srcnotes[order(srcnotes$sourcenote),]
+srcnotes$sourcenote=str_trim(srcnotes$sourcenote,"left")
+saveRDS(srcnotes,"sourcenotes.rds")
+#t=sort(str_trim(t,"both"))
+#t=t[t!="Source"]
+#t=t[t!=""]
+#t=c(t[,2:dim(t)[2]])
+#p<-function(x) {substr(x,start = 10,nchar(x))}
+#
+```
+#future to trace repealed, replaced etc
+
+```{r process-repealed}
+repealnotes=rsadata[repealed,]
+#sourcetext=sourcetext[nchar(sourcetext)>1]
+#sourcetext=str_replace(sourcetext,"eff\\.","eff")
+#t=str_split(sourcetext,"\\.",simplify=T)
+#dt=as.data.frame(t)
+repealnotes=repealnotes[order(repealnotes$text),]
+saveRDS(repealnotes,"repealnotes.rds")
+
+```
+### Meat of the matter
+
+```{r prep-links}
+strReverse <- function(x)
+  sapply(lapply(strsplit(x, NULL), rev), paste, collapse="")
+basedir="html/"
+rsa.wikidir="rsa.wiki/rsa/"
+law.wikidir="../rsa.wiki/law/"
+rsadata$md<-str_replace(rsadata$rsaxml,basedir,rsa.wikidir)
+rsadata$md<-str_replace(rsadata$md,"htm","md")
+rsadata$mdlink<-basename(rsadata$md)
+rsadata$mdlink<-str_replace(rsadata$mdlink,".md","")
+
+```
+RS - Revised Statutes 1842
+CS - Compiled Statutes 1853
+GS - General Statutes 1867
+PS - Public Statutes 1891
+GL - General Laws 1878
+PL - Public Laws 1926
+RL - Revised Laws 1942 
+RSA - Revised Statutes Annotated (refers to the original 6-volumes published in 1955, not the current
+RSAs)
+[[Link Text|WikiLink]]
+GL 235:14
+GS 216:14
+PS 231:14
+RL 399:15
+RSA ...
+```{r build-site}
+#for (rsa in rsadata){
+recnos=which(!repealed)
+hasnosource=which(nosource)
+#for (rsa in (rsadata[!repealed,])){
+for( recno in recnos) {
+  rsa=rsadata[recno,]
+  #  print(rsa)
+  fn=rsa$md
+  dn=dirname(fn)
+  dslash=str_locate_all(dn,"/")
+  for (e in 2:dim(dslash[[1]])[1]){
+    bdn=substr(dn,1,dslash[[1]][e])
+    ifelse(!dir.exists(bdn), dir.create(bdn), FALSE)
+  }
+  #  bdn=substr(dn,1,dslash[[1]][3])
+  #  ifelse(!dir.exists(bdn), dir.create(bdn), FALSE)
+  #  bdn=substr(dn,1,dslash[[1]][4])
+  #  ifelse(!dir.exists(bdn), dir.create(bdn), FALSE)
+  
+  ifelse(!dir.exists(dn), dir.create(dn), FALSE)
+  write(rsa$titlename,file=fn)
+  write("  ",file=fn,append=T)
+  write(file=fn,rsa$chapter,append=T)
+  write("  ",file=fn,append=T)
+  write(file=fn,rsa$sectiontitle,append = T)
+  write("  ",file=fn,append=T)
+  write(file=fn,rsa$text,append = T)
+  write("  ",file=fn,append=T)
+  sourcenote=rsa$sourcenote
+  t=str_split(sourcenote,"[.;]",simplify=T)
+  t=t[t!="Source"]
+  t=t[t!=""]
+  t=sort(str_trim(t,"both"))
+  if (length(t)>0 && !(recno %in% hasnosource)){
+    write(file=fn,"Sources: ",append = T)
+    #    if(length(t)>15)print(t)
+    for (tn in 1:length(t)){
+      tt=t[tn]
+      PlPattern="[0-9]{4}"
+      isPL=str_locate(tt,PlPattern)
+      isPL=na.omit(isPL)
+      if(length(isPL)==0){
+        LawPattern=c("GL","GS","CS","PS","RL","RS")
+        isLaw=str_locate(tt,LawPattern)
+        isLaw=na.omit(isLaw)
+        pl=isLaw
+      } else pl=isPL
+
+      isPl=(length(isPL)>0 && isPL[1]==1) 
+      isLaw=(length(isLaw)>0 && isLaw[1]==1)
+      ###      if(dim(pl)[1]>1)pl=pl[1,]
+      #      print(recno)
+      plt=str_replace_all(tt," ","")
+      xx=str_split_fixed(plt,"[,:]",5)
+      if (isLaw){
+        #        plt=str_replace_all(plt,"[,:]","-")
+        plt=paste0("PL",plt,xx[1],sep="-")
+        subtext=xx[2]
+      }
+      if (isPL){
+        plt=paste(xx[1],xx[2],sep="-")
+        subtext=xx[3]
+      }
+      if (isPL | isLaw){
+        write(file=fn,nilnk(tt,plt), append=T)
+#        write(file=paste0(law.wikidir,plt,".md"),nilnk(rsa$sectiontitle,rsa$mdlink))
+        write(file=paste0(law.wikidir,"laws.md"),nilnk(rsa$sectiontitle,rsa$mdlink))
+      }      
+    } else write(file=fn,tt,append = T)
+    write("  ",file=fn,append=T)
+  }
+}
+
+
+```
+
