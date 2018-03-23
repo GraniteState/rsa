@@ -19,6 +19,19 @@ library(dplyr)
 library(purrr)
 library(stringr)
 
+rbind.all.columns <- function(x, y) {
+  
+  x.diff <- setdiff(colnames(x), colnames(y))
+  y.diff <- setdiff(colnames(y), colnames(x))
+  
+  x[, c(as.character(y.diff))] <- NA
+  
+  y[, c(as.character(x.diff))] <- NA
+  
+  return(rbind(x, y))
+}
+
+
 # From the root node:
 # If has_children, then recurse.
 # Otherwise, attributes, value and children (nested) to data frame.
@@ -60,6 +73,7 @@ xml_to_df <- function(doc, ns = xml_ns(doc)) {
 require(data.table)
 rsahtml<-list.files(path="../html/",pattern="*.htm",recursive = T,full.names = T)
 rsahtml<-rsahtml[!(rsahtml %like% "mrg")]
+rsahtml<-rsahtml[!(rsahtml %like% "NHTOC")]
 head(rsahtml)
 ```
 rsaxml:
@@ -71,12 +85,12 @@ sectiontitle
 codesec
 sourcenote
 ```{r set-literals}
-dftags=c("title","chapter","sectionnum","sectiontitle","codesec","sourcenote")
-dftags7=c("title","chapter","subchapter","sectionnum","sectiontitle","codesec","sourcenote")
-dftags8=c("title","chapter","sectionnum","enactnote","repealnotes","sectiontitle","codesec","sourcenote")
-dftags9=c("title","chapter","subchapter","sectionnum","enactlnote","repealnotes","sectiontitle","codesec","sourcenote")
-dftagsr=c("","title","","chapter","","codesec","sourcenote")
-
+#dftags=c("title","chapter","sectionnum","sectiontitle","codesec","sourcenote")
+#dftags7=c("title","chapter","subchapter","sectionnum","sectiontitle","codesec","sourcenote")
+#dftags8=c("title","chapter","sectionnum","enactnote","repealnotes","sectiontitle","codesec","sourcenote")
+#dftagsr=c("","title","","chapter","","codesec","sourcenote")
+#dftags=c("title","titlename","chapter","chaptername","subchapter","sectionnum","sectiontitle","text","sourcenote")
+htags=c("center.h11","center.h12","center.h21","center.h22","center.h2","center.h3","b","text","sourcenote.p","center","center.h21.1","center.h22.1","center.h21.2","center.h22.2")
 
 ```
 
@@ -84,98 +98,65 @@ dftagsr=c("","title","","chapter","","codesec","sourcenote")
 
 ```{r setup-xml-matter}
 require(xml2)
-raw.rsa=data.frame(rsaxml=character(),
-                   titlenum=character(),
-                   titletitle=character(),
-                   chapternum=character(),
-                   chaptertitle=character(),
-                   subchapter=character(),
-                   sectionnum=character(),
-                   sectiontitle=character(),
-                   text=character(),
-                   sourcenote=character(),
-                   repealed=logical())
+# raw.rsa=data.frame(rsaxml=character(),
+# titlenum=character(),
+# titletitle=character(),
+# chapternum=character(),
+# chaptertitle=character(),
+# subchapter=character(),
+# sectionnum=character(),
+# sectiontitle=character(),
+# text=character(),
+# sourcenote=character(),
+# repealed=logical())
+blank.raw.rsa=as.data.frame(matrix(NA,0,length(htags)))
+names(blank.raw.rsa)=htags
 ```
 
 ```{r read-xml-matter}
-for (rsarec in 1:length(rsahtml)){
+raw.rsa=blank.raw.rsa
+for (rsarec in seq(1,length(rsahtml),1)){
+  print(rsarec)
   rsaxml<-xml2::as_list(xml2::read_html(rsahtml[rsarec]))
   rsameta<-unlist(rsaxml$html$body)
   ##  metalist<-which((names(rsameta)=="meta"))
-  metanames=names(rsameta)
-  metalist<-which(metanames!="")
-  rsameta=rsameta[metalist]
   rsameta=rsameta[rsameta!="\r\n"]
-  lmeta=length(rsameta)
+  metanames=names(rsameta)
+  rsameta=rsameta[which(metanames!="")]
+  metanames=names(rsameta)
+  rsameta=rsameta[which(!is.na(metanames))]
+  metanames=names(rsameta)
+  rsatext=rsameta[which(metanames %like% "codesect")]
+  rsatext=paste(rsatext,collapse="  \r\n")
+  rsameta=rsameta[which(!(metanames %like% "codesect"))]
+  metanames=names(rsameta)
+  rsameta=c(rsameta,rsatext)  
+  metanames=c(metanames,"text")
+  names(rsameta)=metanames
+#  print(metanames)
+  df=as.data.frame(as.list(rsameta))
+  df$rsahtml=rsahtml[rsarec]
+  df[,names(df) %like% "ul.li"]<-NULL
+  df[,names(df) %like% "sourcenote.p.b"]<-NULL
+  newcols=setdiff(names(df),names(raw.rsa))
   
-#  validmeta=c(7,6,3,8,9)
-  #  if (!(lmeta %in% validmeta)){
-  #    print(lmeta)
-  #    print(rsarec)
-  #  } else {
-  subchapter=""
-  sectionnum=""
-  sectiontitle=""
-  repealed=FALSE
-  if (lmeta %in% c(8,9)){
-    if (lmeta==8) { names(rsameta)=dftags8
-    }
-    else {
-      names(rsameta)=dftags9
-    }
-    try((sectionnum=rsameta$sectionnum.h31),silent=T)
-    try((sectiontitle=rsameta$sectiontitle),silent=T)
-    repealed=TRUE
-  } 
-  if (lmeta==7){
-    names(rsameta)=dftags7
-    try((subchapter=rsameta$subchapter.h21),silent=T)
-    try((sectionnum=rsameta$sectionnum.h31),silent=T)
-    try((sectiontitle=rsameta$sectiontitle),silent=T)
-  } 
-  if (lmeta==6){
-    names(rsameta)=dftags
-    try((sectionnum=rsameta$sectionnum.h31),silent=T)
-    try((sectiontitle=rsameta$sectiontitle),silent=T)
-  } 
-  #repealed
-  if (lmeta==3){
-    names(rsameta)=dftagsr
-    repealed=TRUE
-  } 
-  sourcenote=""
-  if (length(rsameta$sourcenote)>1){
-    sourcenote=rsameta$sourcenote.p2
-  }
-  if (length(rsameta$sourcenote)==1){
-    sourcenote=rsameta$sourcenote
-  }
-  if (sum(rsameta %like% "repealed")==0){
-    df=data.frame(rsaxml=as.character(rsahtml[rsarec]),
-                  titlenum=rsameta$title.h11,
-                  titlename=rsameta$title.h13,
-                  chapternum=rsameta$chapter.h21,
-                  chaptertitle=rsameta$chapter.h23,
-                  subchapter=subchapter,
-                  sectionnum=sectionnum,
-                  sectiontitle=sectiontitle,
-                  text=paste(unlist(rsameta$codesec),collapse = "\r\n"),
-                  sourcenote=sourcenote
-    )
-    raw.rsa=rbind(raw.rsa,df)
-  }    
-    
-#}  
-  #else {
-  #  print(rsarec)
-  #  print(metalist)
-  #  }
-}
-####RDS(raw.rsa,file="nhrsa.rds",compress = F)
-#
+  if (nrow(raw.rsa)==0){
+    htags=c(htags,newcols)
+    raw.rsa=as.data.frame(matrix(NA,0,length(htags)))
+    names(raw.rsa)=htags
+  } else raw.rsa[,newcols]<-NA
+  df[,setdiff(names(raw.rsa),names(df))]<-NA
+  raw.rsa=rbind(raw.rsa,df)
+}    
 
-#require(stringr)
-#raw.rsa$index=1
-#rsadata<-reshape2::dcast(raw.rsa,rsaxml~name+text,value.var="index")
+```
+```{r rename-and-save}
+require(gdata)
+dftags=c("title","titlename","chapter","chaptername","subchapter","sectionnum","sectiontitle","text","sourcenote","repealed","articlenum","articletitle","partnum","parttitle")
+#htags=c("center.h11","center.h12","center.h21","center.h22","center.h2","center.h3","b","text","sourcenote.p","center","center.h21.1","center.h22.1","center.h21.2","center.h22.2")
+
+  raw.rsa=rename.vars(raw.rsa,from=htags[1:length(dftags)],to=dftags)
+saveRDS(raw.rsa,file="nhrsa.rds",compress = F)
+
 ```
 
