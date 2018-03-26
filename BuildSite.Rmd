@@ -186,7 +186,7 @@ strReverse <- function(x)
 basedir="html/"
 rsa.wikidir="/rsa.wiki/rsa/"
 law.wikidir="/rsa.wiki/law/"
-law.dir="/run/media/kb/YellowThing/rsa.wiki/law/laws.md"
+law.dir="/run/media/kb/YellowThing/rsa.wiki/law/"
 rsadata$md<-str_replace(rsadata$rsaxml,basedir,rsa.wikidir)
 rsadata$md<-str_replace(rsadata$md,"htm","md")
 rsadata$mdlink<-basename(rsadata$md)
@@ -282,7 +282,7 @@ for( recno in recnos) {
         if (isPL | isLaw){
           write(file=fn,nilnk(tt,plt), append=T)
           #        write(file=paste0(law.wikidir,plt,".md"),nilnk(rsa$sectiontitle,rsa$mdlink))
-          write(file=law.dir,nilnk(rsa$sectiontitle,rsa$mdlink),append = T)
+          write(file=paste(law.dir,plt,sep="/"),nilnk(rsa$sectiontitle,rsa$mdlink),append = T)
         } else {
           write(file=fn,tt,append = T)
         }      
