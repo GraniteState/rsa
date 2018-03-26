@@ -11,7 +11,6 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 options(stringsAsFactors = F)
 require(data.table)
-require(stringr)
 require(tidyr)
 require(gtools)
 #require(stringi)
@@ -50,6 +49,7 @@ nilnk<-function(show,lnk){
 
 ```{r read-data-files}
 rsadata=readRDS("nhrsa.rds")
+rsadata$rsaxml=rsadata$rsahtml
 #tkey=mixedorder(rsadata$titlename,numeric.type = "roman")
 #ckey=mixedorder(rsadata$chapter)
 skey=mixedorder(rsadata$sectiontitle)
@@ -60,34 +60,17 @@ repealed=(rsadata$text %like% "\\[Repealed [0-9]{4}")
 nosource=!(nchar(rsadata$text)>1)
 ```
 
-```{r standardize-source-notes}
-replist=c("eff","p","a","m","Sept")
-print(replist)
-#paste0(replist,".")
-for (frag in replist){ rsadata$sourcenote=str_replace_all(rsadata$sourcenote,paste0(frag,"\\."),frag)
-}#  t=str_replace(sourcenote,"Jan\\.","Jan")
-for (monno in 1:12){
-  frag=paste0(substr(month.abb,1,2)[monno],"\\.")
-  fragr=month.name[monno]
-  rsadata$sourcenote=str_replace_all(rsadata$sourcenote,frag,fragr)
-  frag=paste0(month.abb[monno],"\\.")
-  fragr=month.name[monno]
-  rsadata$sourcenote=str_replace_all(rsadata$sourcenote,frag,fragr)
-}  
-
-```
-
 
 ```{r parse-title}
-titles=unique(rsadata$titlename)
-titledata=as.data.frame(str_split_fixed(titles," ",n=3))
+titles=unique(rsadata$title)
+titledata=as.data.frame(str_split_fixed(titles," ",n=2))
 titledata$V1<-NULL
-names(titledata)=c("roman","title")
+titledata=as.data.frame(str_split_fixed(titledata$V2,"-",n=2))
+names(titledata)=c("roman","subroman")
 titledata$titleno=roman2int(titledata$roman)
 titledata$titlename=titles
 rm(titles)
-rsadata=merge(rsadata,titledata)
-rsadata=rsadata[order(rsadata$key),]
+###rsadata=merge(rsadata,titledata)
 rm(titledata)
 ```
 
@@ -104,10 +87,57 @@ sectiondata=cbind(sectiondata,titledata)
 rm(titledata)
 sectiondata$sectiontitle=titles
 rm(titles)
-rsadata=merge(rsadata,sectiondata)
-rsadata=rsadata[order(rsadata$key),]
+###rsadata=merge(rsadata,sectiondata)
+###rsadata=rsadata[order(rsadata$key),]
 rm(sectiondata)
 ```
+
+
+```{r standardize-source-notes}
+replist=c("eff","p","a","m","Sept","Ex","Par","par","Pars","pars","July")
+print(replist)
+#paste0(replist,".")
+for (frag in replist){ rsadata$sourcenote=str_replace_all(rsadata$sourcenote,paste0(frag,"\\."),frag)
+}#  t=str_replace(sourcenote,"Jan\\.","Jan")
+for (monno in 1:12){
+  frag=paste0(substr(month.abb,1,2)[monno],"\\.")
+  fragr=month.name[monno]
+  rsadata$sourcenote=str_replace_all(rsadata$sourcenote,frag,fragr)
+  frag=paste0(month.abb[monno],"\\.")
+  fragr=month.name[monno]
+  rsadata$sourcenote=str_replace_all(rsadata$sourcenote,frag,fragr)
+}  
+
+rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"Sp\\. Sess\\.","Special Session")
+rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"Sp Sess\\.","Special Session")
+#AM PM
+rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"\\.M\\.","M")
+# HB, SB
+rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"\\.B\\.","B")
+rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"pt\\.","Part")
+rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"part\\.","part")
+#Const. art. 
+rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"Const\\., Art\\.","Constitution Article")
+
+rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"Const\\. art\\.","Constitution Article")
+
+
+```
+
+```{r custom-soure-fix}
+rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"PL 89\\.1","PL 89:1")
+#163.11
+rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"163\\.11","163:11")
+#2003. 115:2
+rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"2003\\. 115:2","2003, 115:2")
+#1937. 178:1
+rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"1937\\.  178:1","1937, 178:1")
+#12:01.
+rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"12:01\\. ","12:01")
+
+```
+
+
 
 ### This is just for research
 
@@ -152,13 +182,13 @@ saveRDS(repealnotes,"repealnotes.rds")
 strReverse <- function(x)
   sapply(lapply(strsplit(x, NULL), rev), paste, collapse="")
 basedir="html/"
-rsa.wikidir="rsa.wiki/rsa/"
-law.wikidir="../rsa.wiki/law/"
+rsa.wikidir="/rsa.wiki/rsa/"
+law.wikidir="/rsa.wiki/law/"
+law.dir="/run/media/kb/YellowThing/rsa.wiki/law/laws.md"
 rsadata$md<-str_replace(rsadata$rsaxml,basedir,rsa.wikidir)
 rsadata$md<-str_replace(rsadata$md,"htm","md")
 rsadata$mdlink<-basename(rsadata$md)
 rsadata$mdlink<-str_replace(rsadata$mdlink,".md","")
-
 ```
 RS - Revised Statutes 1842
 CS - Compiled Statutes 1853
@@ -169,6 +199,7 @@ PL - Public Laws 1926
 RL - Revised Laws 1942 
 RSA - Revised Statutes Annotated (refers to the original 6-volumes published in 1955, not the current
 RSAs)
+Constitution Article 
 [[Link Text|WikiLink]]
 GL 235:14
 GS 216:14
@@ -219,7 +250,7 @@ for( recno in recnos) {
       isPL=str_locate(tt,PlPattern)
       isPL=na.omit(isPL)
       if(length(isPL)==0){
-        LawPattern=c("GL","GS","CS","PS","RL","RS")
+        LawPattern=c("GL","GS","CS","PS","RL","RS","RSA","Constitution Article")
         isLaw=str_locate(tt,LawPattern)
         isLaw=na.omit(isLaw)
         pl=isLaw
@@ -246,7 +277,7 @@ for( recno in recnos) {
       if (isPL | isLaw){
         write(file=fn,nilnk(tt,plt), append=T)
         #        write(file=paste0(law.wikidir,plt,".md"),nilnk(rsa$sectiontitle,rsa$mdlink))
-        write(file=paste0(law.wikidir,"laws.md"),nilnk(rsa$sectiontitle,rsa$mdlink))
+        write(file=law.dir,nilnk(rsa$sectiontitle,rsa$mdlink))
       } else {
         write(file=fn,tt,append = T)
       }      
