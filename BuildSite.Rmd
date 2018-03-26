@@ -146,8 +146,8 @@ sourcetext=rsadata$sourcenote[!repealed & !nosource]
 #sourcetext=sourcetext[nchar(sourcetext)>1]
 ### moved sourcetext=str_replace(sourcetext,"eff\\.","eff")
 t=str_split(sourcetext,"\\.",simplify=T)
-rm(t)
 dt=as.data.frame(t)
+rm(t)
 dt$V1<-NULL
 dt$rsaxml=rsadata$rsaxml[!repealed & !nosource]
 srcnotes<-gather(dt, vv, sourcenote, 1:(ncol(dt)-1), factor_key=FALSE)
