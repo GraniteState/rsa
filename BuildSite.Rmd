@@ -13,7 +13,7 @@ options(stringsAsFactors = F)
 require(data.table)
 require(tidyr)
 require(gtools)
-#require(stringi)
+require(stringr)
 
 ```
 
@@ -146,10 +146,12 @@ sourcetext=rsadata$sourcenote[!repealed & !nosource]
 #sourcetext=sourcetext[nchar(sourcetext)>1]
 ### moved sourcetext=str_replace(sourcetext,"eff\\.","eff")
 t=str_split(sourcetext,"\\.",simplify=T)
+rm(t)
 dt=as.data.frame(t)
 dt$V1<-NULL
 dt$rsaxml=rsadata$rsaxml[!repealed & !nosource]
 srcnotes<-gather(dt, vv, sourcenote, 1:(ncol(dt)-1), factor_key=FALSE)
+rm(dt)
 srcnotes$vv<-NULL
 srcnotes=srcnotes[!is.na(srcnotes$sourcenote),]
 srcnotes=srcnotes[!(srcnotes$sourcenote==""),]
@@ -189,6 +191,8 @@ rsadata$md<-str_replace(rsadata$rsaxml,basedir,rsa.wikidir)
 rsadata$md<-str_replace(rsadata$md,"htm","md")
 rsadata$mdlink<-basename(rsadata$md)
 rsadata$mdlink<-str_replace(rsadata$mdlink,".md","")
+rm(srcnotes)
+rm(repealnotes)
 ```
 RS - Revised Statutes 1842
 CS - Compiled Statutes 1853
@@ -236,53 +240,55 @@ for( recno in recnos) {
   write("  ",file=fn,append=T)
   write(file=fn,rsa$text,append = T)
   write("  ",file=fn,append=T)
-  sourcenote=rsa$sourcenote
-  t=str_split(sourcenote,"[.;]",simplify=T)
-  t=t[t!="Source"]
-  t=t[t!=""]
-  t=sort(str_trim(t,"both"))
-  if (length(t)>0 && !(recno %in% hasnosource)){
-    write(file=fn,"Sources: ",append = T)
-    #    if(length(t)>15)print(t)
-    for (tn in 1:length(t)){
-      tt=t[tn]
-      PlPattern="[0-9]{4}"
-      isPL=str_locate(tt,PlPattern)
-      isPL=na.omit(isPL)
-      if(length(isPL)==0){
-        LawPattern=c("GL","GS","CS","PS","RL","RS","RSA","Constitution Article")
-        isLaw=str_locate(tt,LawPattern)
-        isLaw=na.omit(isLaw)
-        pl=isLaw
-      }
-      if(length(isPL)>0){
-        pl=isPL
-        isLaw=F
-      }
-      isPL=(length(isPL)>0 && isPL[1]==1) 
-      isLaw=(length(isLaw)>0 && isLaw[1]==1)
-      ###      if(dim(pl)[1]>1)pl=pl[1,]
-      #      print(recno)
-      plt=str_replace_all(tt," ","")
-      xx=str_split_fixed(plt,"[,:]",5)
-      if (isLaw){
-        #        plt=str_replace_all(plt,"[,:]","-")
-        plt=paste0("PL",plt,xx[1],sep="-")
-        subtext=xx[2]
-      }
-      if (isPL){
-        plt=paste(xx[1],xx[2],sep="-")
-        subtext=xx[3]
-      }
-      if (isPL | isLaw){
-        write(file=fn,nilnk(tt,plt), append=T)
-        #        write(file=paste0(law.wikidir,plt,".md"),nilnk(rsa$sectiontitle,rsa$mdlink))
-        write(file=law.dir,nilnk(rsa$sectiontitle,rsa$mdlink))
-      } else {
-        write(file=fn,tt,append = T)
-      }      
-    } 
-    write("  ",file=fn,append=T)
+  if(!(recno %in% hasnosource)){
+    sourcenote=rsa$sourcenote
+    t=str_split(sourcenote,"[.;]",simplify=T)
+    #  t=t[t!="Source"]
+    #  t=t[t!=""]
+    t=(str_trim(t,"both"))
+    if (length(t)>0){
+      write(file=fn,"Sources: ",append = T)
+      #    if(length(t)>15)print(t)
+      for (tn in 1:length(t)){
+        tt=t[tn]
+        PlPattern="[0-9]{4}"
+        isPL=str_locate(tt,PlPattern)
+        isPL=na.omit(isPL)
+        if(length(isPL)==0){
+          LawPattern=c("GL","GS","CS","PS","RL","RS","RSA","Constitution Article")
+          isLaw=str_locate(tt,LawPattern)
+          isLaw=na.omit(isLaw)
+          pl=isLaw
+        }
+        if(length(isPL)>0){
+          pl=isPL
+          isLaw=F
+        }
+        isPL=(length(isPL)>0 && isPL[1]==1) 
+        isLaw=(length(isLaw)>0 && isLaw[1]==1)
+        ###      if(dim(pl)[1]>1)pl=pl[1,]
+        #      print(recno)
+        plt=str_replace_all(tt," ","")
+        xx=str_split_fixed(plt,"[,:]",5)
+        if (isLaw){
+          #        plt=str_replace_all(plt,"[,:]","-")
+          plt=xx[1]
+          subtext=xx[2]
+        }
+        if (isPL){
+          plt=paste("PL",xx[1],xx[2],sep="-")
+          subtext=xx[3]
+        }
+        if (isPL | isLaw){
+          write(file=fn,nilnk(tt,plt), append=T)
+          #        write(file=paste0(law.wikidir,plt,".md"),nilnk(rsa$sectiontitle,rsa$mdlink))
+          write(file=law.dir,nilnk(rsa$sectiontitle,rsa$mdlink),append = T)
+        } else {
+          write(file=fn,tt,append = T)
+        }      
+      } 
+      write("  ",file=fn,append=T)
+    }
   }
 }
 
