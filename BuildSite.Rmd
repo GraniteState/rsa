@@ -108,8 +108,8 @@ for (monno in 1:12){
   rsadata$sourcenote=str_replace_all(rsadata$sourcenote,frag,fragr)
 }  
 
-rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"Sp\\. Sess\\.","Special Session")
-rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"Sp Sess\\.","Special Session")
+rsadata$sourcenote=str_replace_all(rsadata$sourcenote,", Sp\\. Sess\\."," Special Session")
+rsadata$sourcenote=str_replace_all(rsadata$sourcenote,", Sp Sess\\."," Special Session")
 #AM PM
 rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"\\.M\\.","M")
 # HB, SB
