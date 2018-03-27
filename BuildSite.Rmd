@@ -94,7 +94,7 @@ rm(sectiondata)
 
 
 ```{r standardize-source-notes}
-replist=c("eff","p","a","m","Sept","Ex","Par","par","Pars","pars","July")
+replist=c("eff","p","a","m","Sept","Ex","Par","par","Pars","pars","July","Const")
 print(replist)
 #paste0(replist,".")
 for (frag in replist){ rsadata$sourcenote=str_replace_all(rsadata$sourcenote,paste0(frag,"\\."),frag)
@@ -232,11 +232,11 @@ for( recno in recnos) {
   #  ifelse(!dir.exists(bdn), dir.create(bdn), FALSE)
   
   ifelse(!dir.exists(dn), dir.create(dn), FALSE)
-  write(rsa$titlename,file=fn)
+  write(h1(rsa$titlename),file=fn)
   write("  ",file=fn,append=T)
-  write(file=fn,rsa$chapter,append=T)
+  write(file=fn,h2(rsa$chapter),append=T)
   write("  ",file=fn,append=T)
-  write(file=fn,rsa$sectiontitle,append = T)
+  write(file=fn,h3(rsa$sectiontitle),append = T)
   write("  ",file=fn,append=T)
   write(file=fn,rsa$text,append = T)
   write("  ",file=fn,append=T)
@@ -244,7 +244,7 @@ for( recno in recnos) {
     sourcenote=rsa$sourcenote
     t=str_split(sourcenote,"[.;]",simplify=T)
     #  t=t[t!="Source"]
-    #  t=t[t!=""]
+      t=t[t!=""]
     t=(str_trim(t,"both"))
     if (length(t)>0){
       write(file=fn,"Sources: ",append = T)
@@ -268,21 +268,22 @@ for( recno in recnos) {
         isLaw=(length(isLaw)>0 && isLaw[1]==1)
         ###      if(dim(pl)[1]>1)pl=pl[1,]
         #      print(recno)
-        plt=str_replace_all(tt," ","")
-        xx=str_split_fixed(plt,"[,:]",5)
         if (isLaw){
+        xx=str_split_fixed(tt,"[ :]",5)
           #        plt=str_replace_all(plt,"[,:]","-")
-          plt=xx[1]
-          subtext=xx[2]
+          plt=paste0(xx[1],sprintf("%04d",as.numeric(xx[2])))
+          subtext=as.numeric(xx[2])
         }
         if (isPL){
-          plt=paste("PL",xx[1],xx[2],sep="-")
-          subtext=xx[3]
+        xx=str_split_fixed(plt,"[,:]",5)
+        plt=str_replace_all(tt," ","")
+          plt=paste("PL",xx[1],sprintf("%04d",as.numeric(xx[2])),sep="-")
+          subtext=as.numeric(xx[3])
         }
         if (isPL | isLaw){
           write(file=fn,nilnk(tt,plt), append=T)
           #        write(file=paste0(law.wikidir,plt,".md"),nilnk(rsa$sectiontitle,rsa$mdlink))
-          write(file=paste(law.dir,plt,sep="/"),nilnk(rsa$sectiontitle,rsa$mdlink),append = T)
+          write(file=paste(law.dir,paste0(plt,".md"),sep="/"),nilnk(rsa$sectiontitle,rsa$mdlink),append = T)
         } else {
           write(file=fn,tt,append = T)
         }      
