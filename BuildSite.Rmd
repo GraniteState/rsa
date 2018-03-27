@@ -215,6 +215,7 @@ RSA ...
 recnos=which(!repealed)
 hasnosource=which(nosource)
 recno=3556
+recno=recnos[996]
 #for (rsa in (rsadata[!repealed,])){
 for( recno in recnos) {
   rsa=rsadata[recno,]
@@ -269,14 +270,14 @@ for( recno in recnos) {
         ###      if(dim(pl)[1]>1)pl=pl[1,]
         #      print(recno)
         if (isLaw){
-        xx=str_split_fixed(tt,"[ :]",5)
+          xx=str_split_fixed(tt,"[ :]",5)
           #        plt=str_replace_all(plt,"[,:]","-")
           plt=paste0(xx[1],sprintf("%04d",as.numeric(xx[2])))
           subtext=as.numeric(xx[2])
         }
         if (isPL){
-        xx=str_split_fixed(plt,"[,:]",5)
-        plt=str_replace_all(tt," ","")
+          plt=str_replace_all(tt," ","")
+          xx=str_split_fixed(plt,"[,:]",5)
           plt=paste("PL",xx[1],sprintf("%04d",as.numeric(xx[2])),sep="-")
           subtext=as.numeric(xx[3])
         }
