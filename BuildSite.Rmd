@@ -114,8 +114,8 @@ rsadata$sourcenote=str_replace_all(rsadata$sourcenote,", Sp Sess\\."," Special S
 rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"\\.M\\.","M")
 # HB, SB
 rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"\\.B\\.","B")
-rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"pt\\.","Part")
-rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"part\\.","part")
+rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"pt\\.","")
+rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"part\\.","")
 #Const. art. 
 rsadata$sourcenote=str_replace_all(rsadata$sourcenote,"Const\\., Art\\.","Constitution Article")
 
@@ -191,9 +191,23 @@ rsadata$md<-str_replace(rsadata$rsaxml,basedir,rsa.wikidir)
 rsadata$md<-str_replace(rsadata$md,"htm","md")
 rsadata$mdlink<-basename(rsadata$md)
 rsadata$mdlink<-str_replace(rsadata$mdlink,".md","")
+
 rm(srcnotes)
 rm(repealnotes)
 ```
+
+```{r create-directories}
+dns=unique(dirname(rsadata$md))
+for (dn in dns){
+  dslash=str_locate_all(dn,"/")
+  for (e in 2:dim(dslash[[1]])[1]){
+    bdn=substr(dn,1,dslash[[1]][e])
+    ifelse(!dir.exists(bdn), dir.create(bdn), FALSE)
+  }
+}
+```
+
+
 RS - Revised Statutes 1842
 CS - Compiled Statutes 1853
 GS - General Statutes 1867
@@ -221,12 +235,6 @@ for( recno in recnos) {
   rsa=rsadata[recno,]
   #  print(rsa)
   fn=rsa$md
-  dn=dirname(fn)
-  dslash=str_locate_all(dn,"/")
-  for (e in 2:dim(dslash[[1]])[1]){
-    bdn=substr(dn,1,dslash[[1]][e])
-    ifelse(!dir.exists(bdn), dir.create(bdn), FALSE)
-  }
   #  bdn=substr(dn,1,dslash[[1]][3])
   #  ifelse(!dir.exists(bdn), dir.create(bdn), FALSE)
   #  bdn=substr(dn,1,dslash[[1]][4])
@@ -271,20 +279,36 @@ for( recno in recnos) {
         #      print(recno)
         if (isLaw){
           xx=str_split_fixed(tt,"[ :]",5)
+          xx=xx[xx!=""]
+          
           #        plt=str_replace_all(plt,"[,:]","-")
-          plt=paste0(xx[1],sprintf("%04d",as.numeric(xx[2])))
-          subtext=as.numeric(xx[2])
+          lawnum=extract_numeric(xx[2])
+          lawlet=extract(xx[2],regex="[[:alphabet:]]")
+          if (is.numeric(xx[2])){
+            plt=paste0(xx[1],sprintf("%04d",as.numeric(xx[2])))
+          }
+          if (!(is.numeric(xx[2]))){
+            plt=paste0(xx[1],xx[2])
+          }
+          subtext=(xx[3])
         }
         if (isPL){
           plt=str_replace_all(tt," ","")
           xx=str_split_fixed(plt,"[,:]",5)
-          plt=paste("PL",xx[1],sprintf("%04d",as.numeric(xx[2])),sep="-")
-          subtext=as.numeric(xx[3])
+          xx=xx[xx!=""]
+          if (is.numeric(xx[2])){
+            plt=paste("PL",xx[1],sprintf("%04d",as.numeric(xx[2])),sep="-")
+          }
+          if (!(is.numeric(xx[2]))){
+            plt=paste("PL",xx[1],xx[2],sep="-")
+          }
+          subtext=(xx[3])
         }
         if (isPL | isLaw){
           write(file=fn,nilnk(tt,plt), append=T)
           #        write(file=paste0(law.wikidir,plt,".md"),nilnk(rsa$sectiontitle,rsa$mdlink))
-          write(file=paste(law.dir,paste0(plt,".md"),sep="/"),nilnk(rsa$sectiontitle,rsa$mdlink),append = T)
+          pfn=paste(law.dir,paste0(plt,".md"),sep="/")
+          write(file=pfn,nilnk(rsa$sectiontitle,rsa$mdlink),append = T)
         } else {
           write(file=fn,tt,append = T)
         }      

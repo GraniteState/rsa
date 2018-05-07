@@ -1,0 +1,56 @@
+---
+title: "Keyword N-Grams RSA"
+author: "K Belisle"
+date: "May 3, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r austin,eval=FALSE}
+library(janeaustenr)
+library(dplyr)
+library(stringr)
+
+original_books <- austen_books() %>%
+  group_by(book) %>%
+  mutate(linenumber = row_number(),
+         chapter = cumsum(str_detect(text, regex("^chapter [\\divxlc]",ignore_case = TRUE)))) %>%
+  ungroup()
+
+original_books
+```
+
+```{r tidybook,eval=FALSE}
+library(tidytext)
+tidy_books <- original_books %>%
+  unnest_tokens(word, text)
+
+tidy_books %>%
+  count(word, sort = TRUE) 
+
+austen_bigrams <- austen_books() %>%
+  unnest_tokens(bigram, text, token = "ngrams", n = 2)
+```
+
+```{r}
+library(dplyr)
+library(stringr)
+library(dplyr)
+library(tidytext)
+library(data.table)
+
+rsa<-readRDS(file="nhrsa.rds")
+tidy_books <- rsa %>%
+  unnest_tokens(word, text) %>%
+  count(word, sort = TRUE) 
+rsa_bigrams <- rsa %>%
+  unnest_tokens(bigram, text, token = "ngrams", n = 2)
+rsa_pentagrams <- rsa[rsa$text %like% "violation",] %>%
+  unnest_tokens(bigram, text, token = "ngrams", n = 5)
+
+  ```
+
+
