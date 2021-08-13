@@ -1,0 +1,363 @@
+,code,fromv,tov
+0,4130,Salary–Town Administrator,Salary – Town Administrator
+1,4130,Salary - Trustees of Trust Funds,Salary - Trustees of Trust Funds
+2,4130,Telephone,Telephone
+3,4130,Salary - Website Entry,Salary - Website Entry
+4,4130,TOTAL,TOTAL
+5,4130,Office Equipment,Office Equipment
+6,4130,Contracted Services,Contracted Services
+7,4130,Computer,Computer
+8,4130,Postage,Postage
+9,4130,Town Meeting,Town Meeting
+10,4130,Salary - Selectmen,Salary - Selectmen
+11,4130,Town Report,Town Report
+12,4130,Workshops,Workshops
+13,4130,Mileage,Mileage
+14,4130,Salary - Moderator,Salary - Moderator
+15,4130,Salary–Selectmen support Staff,Salary – Selectmen support Staff
+16,4140,Telephone,Telephone
+17,4140,Salary – Town Clerk,Salary – Town Clerk
+18,4140,Salary – Ballot Clerks,Salary – Ballot Clerks
+19,4140,Workshops,Workshops
+20,4140,Election Expenses,Election Expenses
+21,4140,Salary – Deputy Town Clerk,Salary – Deputy Town Clerk
+22,4140,Records Preservation,Records Preservation
+23,4140,Books/Publications,Books & Publications
+24,4140,Salary - Town Clerk,Salary - Town Clerk
+25,4140,Office Equipment/Supplies,Office Equipment & Supplies
+26,4140,Salary - Ballot Clerks,Salary - Ballot Clerks
+27,4140,Office Equipment & Supplies,Office Equipment & Supplies
+28,4140,Salary - Deputy Town Clerk,Salary - Deputy Town Clerk
+29,4140,Mileage,Mileage
+30,4140,Software,Software
+31,4140,TOTAL,TOTAL
+32,4140,Software Support,Software Support
+33,4140,Dues,Dues
+34,4140,Postage,Postage
+35,4140,Advertising,Advertising
+36,4140,Salary Asst,Salary Asst
+37,4141,TOTAL,TOTAL
+38,4141,Salary,Salary
+39,4141,Postage,Postage
+40,4141,Advertising,Advertising
+41,4141,Workshops & Seminars,Workshops & Seminars
+42,4141,Software support,Software support
+43,4141,Mileage,Mileage
+44,4141,Software,Software
+45,4141,Other,Other
+46,4141,Supplies,Supplies
+47,4150,Telephone,Telephone
+48,4150,Office Equipment & Supplies,Office Equipment & Supplies
+49,4150,Workshops,Workshops
+50,4150,Salary – Deputy Treasurer,Salary – Deputy Treasurer
+51,4150,Salary - Deputy Tax Collector,Salary - Deputy Tax Collector
+52,4150,Salary Treasurer,Salary - Treasurer
+53,4150,Workshops & Seminars,Workshops & Seminars
+54,4150,Financial & Banking Supplies,Financial & Banking Supplies
+55,4150,Records Preservation,Records Preservation
+56,4150,Financial/Banking Supplies,Financial/Banking Supplies
+57,4150,Salary - Tax Collector,Salary - Tax Collector
+58,4150,Auditors,Auditors
+59,4150,Office Equipment & Supplies,Office Equipment & Supplies
+60,4150,Software,Software
+61,4150,Association Dues,Association Dues
+62,4150,Record Preservation,Record Preservation
+63,4150,Bank Charges,Bank Charges
+64,4150,Salary Deputy Treasurer,Salary - Deputy Treasurer
+65,4150,Tax Collector Salary,Salary - Tax Collector
+66,4150,TOTAL,TOTAL
+67,4150,Recording Fees,Recording Fees
+68,4150,Salary – Treasurer,Salary – Treasurer
+69,4150,Software Support,Software Support
+70,4150,Postage,Postage
+71,4150,Deputy Tax Collector Salary,Salary - Deputy Tax Collector
+72,4150,Mileage Reimbursement,Mileage Reimbursement
+73,4151,TOTAL,TOTAL
+74,4151,Salary - Secretary,Salary - Secretary
+75,4151,Advertising,Advertising
+76,4151,Office Equipment & Supplies,Office Equipment & Supplies
+77,4151,Workshops,Workshops
+78,4151,Mileage,Mileage
+79,4151,Mileage Reimbursement,Mileage Reimbursement
+80,4151,Office Equipment & Supplies,Office Equipment & Supplies
+81,4151,Secretary,Secretary
+82,4152,TOTAL,TOTAL
+83,4152,Deeds,Deeds
+84,4152,Utilities,Utilities
+85,4152,Software Support,Software Support
+86,4152,Postage,Postage
+87,4152,Office Equipment & Supplies,Office Equipment & Supplies
+88,4152,Tax Maps,Tax Maps
+89,4152,Software,Software
+90,4152,Equipment/Supplies,Equipment & Supplies
+91,4153,2020 budget 10K added by town meeting,2020 budget 10K added by town meeting
+92,4153,TOTAL,TOTAL
+93,4153,Legal,Legal
+94,4155,Retirement,Retirement
+95,4155,Other,Other (such as FICA)
+96,4155,Other (such as FICA),Other (such as FICA)
+97,4155,TOTAL,TOTAL
+98,4191,Telephone,Telephone
+99,4191,Office Equipment & Supplies,Office Equipment & Supplies
+100,4191,Public Hearings,Public Hearings
+101,4191,Printing & Office Supplies,Printing & Office Supplies
+102,4191,Equipment,Equipment
+103,4191,Computer Services,Computer Services
+104,4191,Books & Publications,Books & Publications
+105,4191,Workshops & Seminars,Workshops & Seminars
+106,4191,Dues & Memberships,Dues & Memberships
+107,4191,Salary - ZEO,Salary - ZEO
+108,4191,Secretary,Salary - Secretary
+109,4191,Secretary Wages,Salary - Secretary
+110,4191,Professional Services,Professional Services
+111,4191,Tech Support,Tech Support
+112,4191,Mileage,Mileage
+113,4191,Association Dues,Association Dues
+114,4191,Supplies,Supplies
+115,4191,Travel,Travel
+116,4191,TOTAL,TOTAL
+117,4191,Recording Fees,Recording Fees
+118,4191,Printing,Printing
+119,4191,Salary - Secretary,Salary - Secretary
+120,4191,Postage,Postage
+121,4191,Advertising,Advertising
+122,4191,Books and Publications,Books & Publications
+123,4194,TOTAL,TOTAL
+124,4194,Electric,Electric
+125,4194,Maintenance supplies & Equipment,Maintenance Supplies & Equipment
+126,4194,Heating Fuel,Heating Fuel
+127,4194,Salaries,Salaries
+128,4194,Other,Other
+129,4194,Electricity,Electricity
+130,4195,Cemeteries,Cemeteries
+131,4195,TOTAL,TOTAL
+132,4196,TOTAL,TOTAL
+133,4196,Liability/WorkerComp/Unemployment,Liability/WorkerComp/Unemployment
+134,4196,"# $5,266.51 employee contribution","# $5,266.51 employee contribution"
+135,4196,Liability/WorkerComp/ Unemployment,Liability/Workers Comp/Unemployment
+136,4196,Contributions,Contributions
+137,4196,Health Insurance,Health Insurance
+138,4196,Health Insurance#,Health Insurance
+139,4196,Liability/Workers Comp/Unemployment,Liability/Workers Comp/Unemployment
+140,4197,Advertising & Dues,Advertising & Dues
+141,4197,TOTAL,TOTAL
+142,4210,Salary – Secretary,Salary – Secretary
+143,4210,Telephone,Telephone
+144,4210,Salary - Chief,Salary - Chief
+145,4210,Equipment,Equipment
+146,4210,Radar Certification,Radar Certification
+147,4210,Salary - PT Officers,Salary - PT Officers
+148,4210,Training,Training
+149,4210,Salary - Sergeant,Salary - Sergeant
+150,4210,Vehicle Maintence,Vehicle Maintenance
+151,4210,Radar Recertification,Radar Recertification
+152,4210,Salary - SGT,Salary - Sergeant
+153,4210,Software,Software
+154,4210,Vehicle Maintenance,Vehicle Maintenance
+155,4210,Uniforms,Uniforms
+156,4210,Radio Maintenance,Radio Maintenance
+157,4210,Supplies,Supplies
+158,4210,TOTAL,TOTAL
+159,4210,Salary - Secretary,Salary - Secretary
+160,4210,Dues,Dues
+161,4210,Postage,Postage
+162,4210,Salary - Part Time,Salary - Part Time
+163,4210,Police Details,Police Details
+164,4210,Fuel,Fuel
+165,4210,Salary - Police Chief,Salary - Police Chief
+166,4220,EMS Contract,EMS Contract
+167,4220,Telephone,Telephone
+168,4220,Expenses/Supplies,Expenses & Supplies
+169,4220,New Equipment,New Equipment
+170,4220,Medical Supplies,Medical Supplies
+171,4220,Radio,Radio
+172,4220,Disease Prevention,Disease Prevention
+173,4220,Training,Training
+174,4220,Secretary,Secretary
+175,4220,Truck/Equipment Maintence,Truck/Equipment Maintenance
+176,4220,Mutual Aid Dues,Mutual Aid Dues
+177,4220,Mileage,Mileage
+178,4220,Background Checks,Background Checks
+179,4220,TOTAL,TOTAL
+180,4220,Daytime coverage,Daytime coverage
+181,4220,Truck/Equipment Maint,Truck/Equipment Maintenance
+182,4220,Fire Prevention,Fire Prevention
+183,4220,Fuel,Fuel
+184,4220,Member Pay,Member Pay
+185,4290,##2019 did not have a breakdwn just bottom line charge.,##2019 did not have a breakdwn just bottom line charge.
+186,4290,TOTAL,TOTAL
+187,4290,"Equipment Purchase, Repair & Maint.",Equipment Purchase Repair & Maint
+188,4290,Mailing,Mailing
+189,4290,Training & Fire Prevention,Training & Fire Prevention
+190,4290,Mileage,Mileage
+191,4290,Firefighter Reimbursement,Firefighter Reimbursement
+192,4290,Mileage Reimbursement,Mileage Reimbursement
+193,4290,Generator Maintenance,Generator Maintenance
+194,4312,Winter Road Material,Winter Road Material
+195,4312,Roadside Mowing & Clearing,Roadside Mowing & Clearing
+196,4312,Winter Roads - Materials,Winter Roads - Materials
+197,4312,TOTAL,TOTAL
+198,4312,Road Reconstruction,Road Reconstruction
+199,4312,Road Contractor,Road Contractor
+200,4312,Warrant Article #23 Road Reconstruction,Warrant Article #23 Road Reconstruction
+201,4312,Materials,Materials
+202,4312,Signs & Equipment,Signs & Equipment
+203,4312,Calcium Chloride,Calcium Chloride
+204,4312,Roadside Mowing/Clearing,Roadside Mowing & Clearing
+205,4312,Tree Removal,Tree Removal
+206,4312,Crack Sealing,Crack Sealing
+207,4312,Winter Road Contract,Winter Roads Contract
+208,4312,Winter Roads - Contract,Winter Roads Contract
+209,4313,Bridge Maintence,Bridge Maintence
+210,4313,TOTAL,TOTAL
+211,4316,Street Lighting     (25 total),Street Lighting     (25 total)
+212,4316,TOTAL,TOTAL
+213,4323,Repairs/Maintenance,Repairs & Maintenance
+214,4323,Telephone,Telephone
+215,4323,TOTAL,TOTAL
+216,4323,Salaries,Salaries
+217,4323,Mileage,Mileage
+218,4323,Household Hazardous Waste Day,Household Hazardous Waste Day
+219,4323,Supplies,Supplies
+220,4323,Certifications,Certifications
+221,4323,Repairs & Maintenance,Repairs & Maintenance
+222,4324,TOTAL,TOTAL
+223,4324,Used Oil,Used Oil
+224,4324,Electronics,Electronics
+225,4324,Tires,Tires
+226,4324,Glass,Glass
+227,4324,Misc.,Misc.
+228,4324,Total Other,Total Other
+229,4324,Containers - Other,Containers - Other
+230,4324,Freon,Freon
+231,4324,Containers,Containers
+232,4324,Metal,Metal
+233,4324,Containers - Other (below),Containers - Other
+234,4325,Land Fill Monitoring,Land Fill Monitoring
+235,4325,TOTAL,TOTAL
+236,4325,PFAS Testing,PFAS Testing
+237,4414,Animal Control Officer,Animal Control Officer
+238,4414,Animal Control Office,Animal Control Officer
+239,4414,Humane Society Fees,Humane Society Fees
+240,4414,TOTAL,TOTAL
+241,4414,Human Society Fees,Humane Society Fees
+242,4414,Equipment & Supplies,Equipment & Supplies
+243,4415,Ossipee Children’s Fund,Ossipee Childrens Fund
+244,4415,Northern Human Services,Northern Human Services
+245,4415,TOTAL,TOTAL
+246,4415,White Horse Addiction Center,White Horse Addiction Center
+247,4415,VNA - Hospice,VNA - Hospice
+248,4415,Childrens Unlimited,Childrens Unlimited
+249,4415,Freedom Food Pantry,Freedom Food Pantry
+250,4415,White Mtn Community Health,White Mountain Community Health
+251,4415,Tri - County Community Action,Tri - County Community Action
+252,4415,Starting Point,Starting Point
+253,4415,White Mountain Community Health,White Mountain Community Health
+254,4415,Tr - County Community Health,Tri - County Community Health
+255,4415,Ossipee Childrens Fund,Ossipee Childrens Fund
+256,4415,Children’s Unlimited,Childrens Unlimited
+257,4415,Red Cross,Red Cross
+258,4442,Adminstrative,Adminstrative
+259,4442,Assistance,Assistance
+260,4442,TOTAL,TOTAL
+261,4445,Meals on Wheels,Meals on Wheels
+262,4445,TOTAL,TOTAL
+263,4520,Town of Ossipee,Town of Ossipee
+264,4520,**10k added frm last year bill not paid,**10k added frm last year bill not paid
+265,4520,TOTAL,TOTAL
+266,4550,Telephone,Telephone
+267,4550,Office Equipment & Supplies,Office Equipment & Supplies
+268,4550,Contracted Services,Contracted Services
+269,4550,Librarian Asst. Salary,Salary - Asst. Librarian
+270,4550,Salary - Asst. Librarian,Salary - Asst. Librarian
+271,4550,Librarian Assistant,Salary - Asst. Librarian
+272,4550,Operating Expenses,Operating Expenses
+273,4550,Books & Publications,Books & Publications
+274,4550,Librarian,Salary - Librarian
+275,4550,Workshops & Seminars,Workshops & Seminars
+276,4550,Service/Bank Fee,Service/Bank Fee
+277,4550,Technology,Technology
+278,4550,Salary - Librarian,Salary - Librarian
+279,4550,Association Dues,Association Dues
+280,4550,TOTAL,TOTAL
+281,4550,Program Expenses,Program Expenses
+282,4550,Operating Expense (detailed below),Operating Expense (detailed below)
+283,4550,Postage,Postage
+284,4550,Contract Services,Contract Services
+285,4550,Total Salaries,Total Salaries
+286,4583,TOTAL,TOTAL
+287,4583,Patriotic Purposes,Patriotic Purposes
+288,4611,*Poster Contest,Poster Contest
+289,4611,Office Supplies/Stationary,Office Supplies/Stationary
+290,4611,EarthDay,Earth Day
+291,4611,Workshops,Workshops
+292,4611,*Office Supplies/Stationary,Office Supplies/Stationary
+293,4611,*Summer Environmental Camp,Summer Environmental Camp
+294,4611,*Land Improvements,Land Improvements
+295,4611,Summer Environmental Camp,Summer Environmental Camp
+296,4611,Land Improvements,Land Improvements
+297,4611,Association Dues/NHACC,Association Dues/NHACC
+298,4611,*Events & Educational,Events & Educational
+299,4611,*Total above,*Total above
+300,4611,*PLA Lake Host Programs,PLA Lake Host Programs
+301,4611,Events & Educational,Events & Educational
+302,4611,*Earth Day,Earth Day
+303,4611,Water Testing,Water Testing
+304,4611,Future Land Purchases,Future Land Purchases
+305,4611,Mileage,Mileage
+306,4611,Poster Contest,Poster Contest
+307,4611,PLA Lake Host Programs,PLA Lake Host Programs
+308,4611,TOTAL,TOTAL
+309,4611,*Workshops,*Workshops
+310,4611,Summer Enviromental Camp,Summer Environmental Camp
+311,4611,*Water Testing,Water Testing
+312,4611,Earth Day,Earth Day
+313,4611,*Association Dues/NHACC,Association Dues/NHACC
+314,4619,TOTAL,TOTAL
+315,4619,Services,Services
+316,4711,TOTAL,TOTAL
+317,4711,Debt Service,Debt Service
+318,4723,TAN Interest,TAN Interest
+319,4723,TOTAL,TOTAL
+320,4915,&Transfer/Recycling,&Transfer/Recycling
+321,4915,##from CRF no tax impact,##from CRF no tax impact
+322,4915,Transfer/Recycling,Transfer/Recycling
+323,4915,TOTAL,TOTAL
+324,4915,TAX IMPACT TOTAL,TAX IMPACT TOTAL
+325,4915,Police Cruiser,Police Cruiser
+326,4915,**Accept funds no add. cost,**Accept funds no add. cost
+327,4915,**Parsonfield Mutual Aid,**Parsonfield Mutual Aid
+328,4915,Fire Truck/Equipment,Fire Truck/Equipment
+329,4915,##Purchase Cruiser,##Purchase Cruiser
+330,4915,"$2,000 UFB","$2,000 UFB"
+331,4915,Planning Land Use C.I.P.,Planning Land Use C.I.P.
+332,4915,UFB=unassigned fund balance,UFB=unassigned fund balance
+333,4915,Parsonsfield Mutual Aid,Parsonsfield Mutual Aid
+334,4915,#Police Cruiser,#Police Cruiser
+335,4915,"#15,000 UFB","#15,000 UFB"
+336,4915,Voting Machine,Voting Machine
+337,4916,##Emerg. Mgmt Generator replace.,##Emerg. Mgmt Generator replace.
+338,4916,Total,Total
+339,4916,##Bridge Maint,##Bridge Maint
+340,4916,##Police Safety Gear,##Police Safety Gear
+341,4916,Police Safety Gear,Police Safety Gear
+342,4916,TAX IMPACT TOTAL,TAX IMPACT TOTAL
+343,4916,Historic Town Hall,Historic Town Hall
+344,4916,##Library,##Library
+345,4916,Library,Library
+346,4916,##Municipal Electronic Equipment,##Municipal Electronic Equipment
+347,4916,## UFB=unassigned fund balance,## UFB=unassigned fund balance
+348,4916,##Fire Department Equipment,##Fire Department Equipment
+349,4916,TOTAL TAX IMPACT,TOTAL TAX IMPACT
+350,4916,Municipal Electronic Equipment,Municipal Electronic Equipment
+351,4916,##Aquatic,##Aquatic
+352,4916,##Voting Machine,##Voting Machine
+353,4916,##Planning Land Use C.I.P.,##Planning Land Use C.I.P.
+354,4916,Municipal Buildings,Municipal Buildings
+355,4Art,18,18
+356,4Art,13,13
+357,4Art,19,19
+358,4Art,16,16
+359,4Art,??,??
+360,4Art,15/20,15/20
+361,4Art,17,17
